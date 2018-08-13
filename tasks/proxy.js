@@ -121,8 +121,8 @@ module.exports = function(grunt) {
 				  mapInt.set(revNo, proxyMap.get(key)[f]);
 			  }
 			  for(var f = 1; f < proxyMap.get(key).length+1; f++){
-				  console.log(revNo);
-				  var revReq = request.post(url+key, function (err, resp, body) {
+				  console.log(f);
+				  var revReq = request.post({url: url+key}, function (err, resp, body) {
 					  if (err) {
 						grunt.log.error(err);
 					  } else {
