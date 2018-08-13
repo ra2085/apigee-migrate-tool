@@ -134,11 +134,7 @@ module.exports = function(grunt) {
 		});
 		for (var key of proxyMap.keys()) {
 		  console.log(key);
-		  var bod = {name: key};
-		  var req = request.post(create_proxy, function (err, resp, body) {
-			  console.log('error:', err); // Print the error if one occurred
-  console.log('statusCode:', resp && resp.statusCode); // Print the response status code if a response was received
-  console.log('body:', body); // Print the HTML for the Google homepage.
+		  var req = request.post({url: create_proxy, body: {name: key}, json: true, headers:{'Content-Type':'application/json'}}, function (err, resp, body) {
 			  if (err) {
 			    grunt.log.error(err);
 				grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy creation ' + this.url + ' -> ' + body);
