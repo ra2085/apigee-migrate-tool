@@ -115,7 +115,6 @@ module.exports = function(grunt) {
 		});
 		for (var key of proxyMap.keys()) {
 		  console.log(key);
-		  //var req = request.post({url: url+key}, function (err, resp, body) {
 			  var mapInt = new Map();
 			  for(var f = 0; f < proxyMap.get(key).length; f++){
 				  var revNo = proxyMap.get(key)[f].split('/')[4].split('.')[0];
@@ -133,11 +132,7 @@ module.exports = function(grunt) {
 				  var form_1 = revReq.form();
 				  form_1.append('file', fs.createReadStream(proxyMap.get(key)[f]));
 			  }
-			  for(var f = 0; f < proxyMap.get(key).length; f++){
-				  var revNo = proxyMap.get(key)[f].split('/')[4].split('.')[0];
-				  
-			  }
-			  done();
+			  //done();
 		}
 		var done = this.async();
 	});
