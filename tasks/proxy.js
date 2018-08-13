@@ -161,7 +161,7 @@ module.exports = function(grunt) {
 					grunt.log.ok('Processed ' + done_count + ' proxies');
 					done();
 				}
-			}.bind( {url: create_proxy, body: {name: key}, json: true}) ).auth(userid, passwd, true);
+			}.bind( {url: create_proxy, body: {name: key}, json: true, headers:{'Content-Type':'application/json'}}) ).auth(userid, passwd, true);
 		}
 		var done = this.async();
 	});
