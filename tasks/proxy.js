@@ -97,9 +97,14 @@ module.exports = function(grunt) {
 		{
 			files = this.filesSrc;
 		}
-
+		
+		var proxyMap = new Map();
+		
 		files.forEach(function(filepath) {
 			console.log(filepath);
+			var proxy_array = filepath.split('/');
+			var proxy_name = filepath[3];
+			proxyMap.set(proxy_name, []);
 			/*var filename = filepath.replace(/^.*[\\\/]/, '');
 			var name = filename.slice(0, -4);
 			//console.log(name);
@@ -119,6 +124,15 @@ module.exports = function(grunt) {
 			var form = req.form();
 			form.append('file', fs.createReadStream(filepath));**/
 		});
+		files.forEach(function(filepath) {
+			console.log(filepath);
+			var proxy_array = filepath.split('/');
+			var proxy_rev = filepath[4].split('.')[0];
+			proxyMap.get(filepath[3]).push(proxy_rev);
+		});
+		for (var key of proxyMap.keys()) {
+		  console.log(key);
+		}
 		var done = this.async();
 	});
 
