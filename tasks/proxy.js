@@ -99,8 +99,8 @@ module.exports = function(grunt) {
 		}
 
 		files.forEach(function(filepath) {
-			//console.log(filepath);
-			var filename = filepath.replace(/^.*[\\\/]/, '');
+			console.log(filepath);
+			/*var filename = filepath.replace(/^.*[\\\/]/, '');
 			var name = filename.slice(0, -4);
 			//console.log(name);
 			var req = request.post(url+name, function (err, resp, body) {
@@ -117,7 +117,7 @@ module.exports = function(grunt) {
 				}
 			}.bind( {url: url+name}) ).auth(userid, passwd, true);
 			var form = req.form();
-			form.append('file', fs.createReadStream(filepath));
+			form.append('file', fs.createReadStream(filepath));**/
 		});
 		var done = this.async();
 	});
