@@ -128,6 +128,12 @@ module.exports = function(grunt) {
 					  } else {
 						grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy revision creation ' + this.url + ' -> ' + body);
 					  }
+					  done_count++;
+						if (done_count == proxies.length)
+						{
+							grunt.log.ok('Exported ' + done_count + ' proxies.');
+							done();
+						}
 				  }.bind( {url: url+key})).auth(userid, passwd, true);
 				  var form_1 = revReq.form();
 				  form_1.append('file', fs.createReadStream(proxyMap.get(key)[f]));
