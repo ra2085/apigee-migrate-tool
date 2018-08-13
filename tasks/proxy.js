@@ -116,7 +116,7 @@ module.exports = function(grunt) {
 		for (var key of proxyMap.keys()) {
 		  console.log(key);
 		  //var req = request.post({url: url+key}, function (err, resp, body) {
-			  vap mapInt = new Map();
+			  var mapInt = new Map();
 			  for(var f = 0; f < proxyMap.get(key).length; f++){
 				  var revNo = proxyMap.get(key)[f].split('/')[4].split('.')[0];
 				  mapInt.set(revNo, proxyMap.get(key)[f]));
