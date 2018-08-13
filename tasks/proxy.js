@@ -32,16 +32,27 @@ module.exports = function(grunt) {
 						    var proxy_detail =  JSON.parse(body);
                             // var proxy_file = filepath + "/" + proxy_detail.name;
 						    // gets max revision - May not be the deployed version
-						    var max_rev = proxy_detail.revision[proxy_detail.revision.length -1];
+						    //var max_rev = proxy_detail.revision[proxy_detail.revision.length -1];
+							
+							for(var init = proxy_detail.revision.length-1; init > -1; init--){
+									var max_rev = proxy_detail.revision[init];
+									var proxy_download_url = url + "/" + proxy_detail.name + "/revisions/" + max_rev + "?format=bundle";
+									grunt.verbose.writeln ("\nFetching proxy bundle  : " + proxy_download_url);
 
-						    var proxy_download_url = url + "/" + proxy_detail.name + "/revisions/" + max_rev + "?format=bundle";
-						    grunt.verbose.writeln ("\nFetching proxy bundle  : " + proxy_download_url);
+									request(proxy_download_url).auth(userid, passwd, true)
+									  .pipe(fs.createWriteStream(filepath + "/" + proxy_detail.name + '/' + max_rev +'.zip'))
+									  .on('close', function () {
+										//grunt.verbose.writeln('Proxy File written!');
+									});
+							}
+						    //var proxy_download_url = url + "/" + proxy_detail.name + "/revisions/" + max_rev + "?format=bundle";
+						    //grunt.verbose.writeln ("\nFetching proxy bundle  : " + proxy_download_url);
 
-						    request(proxy_download_url).auth(userid, passwd, true)
-							  .pipe(fs.createWriteStream(filepath + "/" + proxy_detail.name + '.zip'))
-							  .on('close', function () {
-							    //grunt.verbose.writeln('Proxy File written!');
-							});
+						    //request(proxy_download_url).auth(userid, passwd, true)
+							//  .pipe(fs.createWriteStream(filepath + "/" + proxy_detail.name + '.zip'))
+							//  .on('close', function () {
+							//    //grunt.verbose.writeln('Proxy File written!');
+							//});
 						}
 						else
 						{
