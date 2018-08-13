@@ -138,6 +138,7 @@ module.exports = function(grunt) {
 		  var req = request.post(create_proxy, function (err, resp, body) {
 			  if (err) {
 			    grunt.log.error(err);
+				grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy creation ' + this.url + ' -> ' + body);
 			  } else {
 			    grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy creation ' + this.url + ' -> ' + body);
 			  }
