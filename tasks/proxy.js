@@ -39,6 +39,8 @@ module.exports = function(grunt) {
 									var proxy_download_url = url + "/" + proxy_detail.name + "/revisions/" + max_rev + "?format=bundle";
 									grunt.verbose.writeln ("\nFetching proxy bundle  : " + proxy_download_url);
 
+									grunt.file.mkdir(filepath + "/" + proxy_detail.name + '/');
+									
 									request(proxy_download_url).auth(userid, passwd, true)
 									  .pipe(fs.createWriteStream(filepath + "/" + proxy_detail.name + '/' + max_rev +'.zip'))
 									  .on('close', function () {
