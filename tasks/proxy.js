@@ -136,6 +136,9 @@ module.exports = function(grunt) {
 		  console.log(key);
 		  var bod = {name: key};
 		  var req = request.post(create_proxy, function (err, resp, body) {
+			  console.log('error:', error); // Print the error if one occurred
+  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+  console.log('body:', body); // Print the HTML for the Google homepage.
 			  if (err) {
 			    grunt.log.error(err);
 				grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy creation ' + this.url + ' -> ' + body);
