@@ -101,30 +101,11 @@ module.exports = function(grunt) {
 		}
 		
 		var proxyMap = new Map();
-		
 		files.forEach(function(filepath) {
 			console.log(filepath);
 			var proxy_array = filepath.split('/');
 			var proxy_name = proxy_array[3];
 			proxyMap.set(proxy_name, []);
-			/*var filename = filepath.replace(/^.*[\\\/]/, '');
-			var name = filename.slice(0, -4);
-			//console.log(name);
-			var req = request.post(url+name, function (err, resp, body) {
-			  if (err) {
-			    grunt.log.error(err);
-			  } else {
-			    grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy creation ' + this.url + ' -> ' + body);
-			  }
-			  done_count++;
-			  if (done_count == files.length)
-				{
-					grunt.log.ok('Processed ' + done_count + ' proxies');
-					done();
-				}
-			}.bind( {url: url+name}) ).auth(userid, passwd, true);
-			var form = req.form();
-			form.append('file', fs.createReadStream(filepath));**/
 		});
 		files.forEach(function(filepath) {
 			console.log(filepath);
@@ -134,33 +115,29 @@ module.exports = function(grunt) {
 		});
 		for (var key of proxyMap.keys()) {
 		  console.log(key);
-		  var req = request.post({url: create_proxy, body: {name: key}, json: true, headers:{'Content-Type':'application/json'}}, function (err, resp, body) {
-			  if (err) {
-			    grunt.log.error(err);
-				grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy creation ' + this.url + ' -> ' + body);
-			  } else {
-			    grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy creation ' + this.url + ' -> ' + body);
-			  }
+		  //var req = request.post({url: url+key}, function (err, resp, body) {
+			  vap mapInt = new Map();
 			  for(var f = 0; f < proxyMap.get(key).length; f++){
 				  var revNo = proxyMap.get(key)[f].split('/')[4].split('.')[0];
+				  mapInt.set(revNo, proxyMap.get(key)[f]));
+			  }
+			  for(var f = 1; f < proxyMap.get(key).length+1; f++){
 				  console.log(revNo);
-				  var revReq = request.post(create_proxy+'/'+key+'/revisions/'+revNo, function (err, resp, body) {
+				  var revReq = request.post(url+key, function (err, resp, body) {
 					  if (err) {
 						grunt.log.error(err);
 					  } else {
 						grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy revision creation ' + this.url + ' -> ' + body);
 					  }
-				  }.bind( {url: create_proxy+'/'+key+'/revisions/'+revNo})).auth(userid, passwd, true);
-				  var form = revReq.form();
-				  form.append('file', fs.createReadStream(proxyMap.get(key)[f]))
+				  }.bind( {url: url+key})).auth(userid, passwd, true);
+				  var form_1 = revReq.form();
+				  form_1.append('file', fs.createReadStream(proxyMap.get(key)[f]));
 			  }
-			  done_count++;
-			  if (done_count == files.length)
-				{
-					grunt.log.ok('Processed ' + done_count + ' proxies');
-					done();
-				}
-			}.bind( {url: create_proxy, body: {name: key}, json: true, headers:{'Content-Type':'application/json'}}) ).auth(userid, passwd, true);
+			  for(var f = 0; f < proxyMap.get(key).length; f++){
+				  var revNo = proxyMap.get(key)[f].split('/')[4].split('.')[0];
+				  
+			  }
+			  done();
 		}
 		var done = this.async();
 	});
