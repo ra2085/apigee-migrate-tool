@@ -48,12 +48,12 @@ module.exports = function(grunt) {
 							} else {
 								intPer.path = per.path;
 							}
-							console.log(intPer.path);
+							//console.log(intPer.path);
 							intPer.permissions = per.permissions;
 							permissionsTo.resourcePermission.push(intPer);
 						}
 					});
-					console.log(JSON.stringify(permissionsTo));
+					//console.log(JSON.stringify(permissionsTo));
 					request.post({url: url+'/'+roleName+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true}, function (err, resp, body) {
 						if (!err && resp.statusCode < 300) {
 							
