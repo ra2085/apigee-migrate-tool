@@ -35,10 +35,10 @@ module.exports = function(grunt) {
 			var rolePath = filepath.split('/');
 			var roleName = rolePath[3].split('.')[0];
 			var permissionsJson = JSON.parse(fs.readFileSync(filepath));
-			var roleEntity = {name: roleName};
+			var roleEntity = {role:[name: roleName]};
 			request.post({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true}, function (err, resp, body) {
 				if (!err && resp.statusCode < 300) {
-				/*	//console.log(roleName);
+					//console.log(roleName);
 					var permissionsTo = {resourcePermission: []};
 					permissionsJson.resourcePermission.forEach(function(per) {
 						if(per.organization === apigee.from.org){
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
 							done();
 						}
 					}.bind({url: url+'/'+roleName+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
-				*/} else {
+				} else {
 					grunt.log.error(err);
 				}
 			}.bind({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true})).auth(userid, passwd, true);
