@@ -123,7 +123,7 @@ module.exports = function(grunt) {
 			  }
 			  for(var f = 1; f < proxyMap.get(key).length+1; f++){
 				  
-				  var revReq = request.post({url: url+key}, function (err, resp, body) {
+				  var revReq = request.post({url: url+key, timeout: 10000}, function (err, resp, body) {
 					  if (err) {
 						grunt.log.error(err);
 					  } else {
@@ -135,7 +135,7 @@ module.exports = function(grunt) {
 							grunt.log.ok('Exported ' + done_count + ' proxies.');
 							done();
 						}
-				  }.bind( {url: url+key})).auth(userid, passwd, true);
+				  }.bind( {url: url+key, timeout: 10000})).auth(userid, passwd, true);
 				  var form_1 = revReq.form();
 				  console.log(mapInt.get(f));
 				  form_1.append('file', fs.createReadStream(mapInt.get(f)));
