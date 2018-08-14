@@ -24,7 +24,10 @@ module.exports = function(grunt) {
 					if(roleName !== 'user' && 
 					roleName !== 'devadmin' && 
 					roleName !== 'opsadmin' && 
-					roleName !== 'orgadmin'){
+					roleName !== 'orgadmin'&& 
+					roleName !== 'businessuser'&& 
+					roleName !== 'readonlyadmin'){
+						grunt.verbose.writeln ("\Writing role: " + roleName);
 						request({url: url+'/'+roleName}).auth(userid, passwd, true)
 						.pipe(fs.createWriteStream(filepath + '/roles/' + roleName +'.json'))
 						.on('close', function () {
