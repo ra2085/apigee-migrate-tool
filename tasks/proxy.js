@@ -118,7 +118,7 @@ module.exports = function(grunt) {
 			  var mapInt = new Map();
 			  for(var f = 0; f < proxyMap.get(key).length; f++){
 				  var revNo = proxyMap.get(key)[f].split('/')[4].split('.')[0];
-				  mapInt.set(revNo, proxyMap.get(key)[f]);
+				  mapInt.set(parseInt(revNo), proxyMap.get(key)[f]);
 				  console.log(revNo+'h'+mapInt.get(revNo));
 			  }
 			  for(var f = 1; f < proxyMap.get(key).length+1; f++){
