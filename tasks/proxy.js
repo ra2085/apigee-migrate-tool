@@ -99,7 +99,7 @@ module.exports = function(grunt) {
 		{
 			files = this.filesSrc;
 		}
-		
+		var total_count = 0;
 		var proxyMap = new Map();
 		files.forEach(function(filepath) {
 			//console.log(filepath);
@@ -112,6 +112,7 @@ module.exports = function(grunt) {
 			//var proxy_rev = proxy_array[4].split('.')[0];
 			proxyMap.get(proxy_array[3]).push(filepath);
 			console.log(proxy_array[3]);
+			total_count++;
 		});
 		proxyMap.forEach(function(value, key) {
 		  console.log(key);
@@ -130,7 +131,7 @@ module.exports = function(grunt) {
 						grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy revision creation ' + this.url + ' -> ' + body);
 					  }
 					  done_count++;
-						if (done_count == proxyMap.size)
+						if (done_count == total_count)
 						{
 							grunt.log.ok('Exported ' + done_count + ' proxies.');
 							done();
