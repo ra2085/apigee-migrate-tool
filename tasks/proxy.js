@@ -61,9 +61,9 @@ module.exports = function(grunt) {
 							grunt.log.ok('Imported ' + done_count + ' roles.');
 							done();
 						}
-					}).bind({url: url+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true}).auth(userid, passwd, true);
+					}.bind({url: url+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
 				}
-			}).bind({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true}).auth(userid, passwd, true);
+			}.bind({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true})).auth(userid, passwd, true);
 		});/*
 		files.forEach(function(filepath) {
 			var proxy_array = filepath.split('/');
