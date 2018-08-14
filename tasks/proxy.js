@@ -66,8 +66,8 @@ module.exports = function(grunt) {
 							grunt.log.ok('Imported ' + done_count + ' roles.');
 							done();
 						}
-				*/	}.bind({url: url+'/'+roleName+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
-				} else {
+					}.bind({url: url+'/'+roleName+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
+				*/} else {
 					grunt.log.error(err);
 				}
 			}.bind({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true})).auth(userid, passwd, true);
