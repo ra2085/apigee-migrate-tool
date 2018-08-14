@@ -127,6 +127,10 @@ module.exports = function(grunt) {
 					  if (err) {
 						grunt.log.error(err);
 					  } else {
+						  if(key === 'CreateProxyWithCustomRole'){
+							  
+						grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy revision creation ' + this.url + ' -> ' + body);
+						  }
 						//grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy revision creation ' + this.url + ' -> ' + body);
 					  }
 					  done_count++;
