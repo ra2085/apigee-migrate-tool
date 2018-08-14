@@ -32,7 +32,7 @@ module.exports = function(grunt) {
 		var proxyMap = new Map();
 		files.forEach(function(filepath) {
 			var rolePath = filepath.split('/');
-			var roleName = proxy_array[3];
+			var roleName = rolePath[3];
 			proxyMap.set(roleName, []);
 			console.log(roleName);
 		});/*
