@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 			var roleEntity = {name: roleName};
 			request.post({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true}, function (err, resp, body) {
 				if (!err && resp.statusCode < 300) {
-					//console.log(roleName);
+				/*	//console.log(roleName);
 					var permissionsTo = {resourcePermission: []};
 					permissionsJson.resourcePermission.forEach(function(per) {
 						if(per.organization === apigee.from.org){
@@ -66,7 +66,7 @@ module.exports = function(grunt) {
 							grunt.log.ok('Imported ' + done_count + ' roles.');
 							done();
 						}
-					}.bind({url: url+'/'+roleName+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
+				*/	}.bind({url: url+'/'+roleName+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
 				} else {
 					grunt.log.error(err);
 				}
