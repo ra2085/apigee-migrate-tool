@@ -108,10 +108,10 @@ module.exports = function(grunt) {
 			proxyMap.set(proxy_name, []);
 		});
 		files.forEach(function(filepath) {
-			//console.log(filepath);
 			var proxy_array = filepath.split('/');
 			//var proxy_rev = proxy_array[4].split('.')[0];
 			proxyMap.get(proxy_array[3]).push(filepath);
+			console.log(proxy_array[3]);
 		});
 		proxyMap.forEach(function(value, key) {
 		  console.log(key);
