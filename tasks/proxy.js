@@ -4,15 +4,16 @@ var apigee = require('../config.js');
 var proxies;
 module.exports = function(grunt) {
 	'use strict';
-	grunt.registerTask('importRoles', 'Import all custom roles from org ' + apigee.from.org + " [" + apigee.from.version + "]", function() {
-		var url = apigee.from.url;
-		var org = apigee.from.org;
-		var userid = apigee.from.userid;
-		var passwd = apigee.from.passwd;
+	grunt.registerTask('importRoles', 'Import all custom roles from org ' + apigee.to.org + " [" + apigee.to.version + "]", function() {
+		var url = apigee.to.url;
+		var org = apigee.to.org;
+		var userid = apigee.to.userid;
+		var passwd = apigee.to.passwd;
 		var fs = require('fs');
 		var filepath = grunt.config.get("exportRoles.dest.data");
 		var done_count =0;
 		var done = this.async();
+		var separateReqPool = {maxSockets: 1};
 		var files;
 		var done_count = 0;
 		url = url + "/v1/organizations/" + org + "/userroles";
@@ -32,9 +33,37 @@ module.exports = function(grunt) {
 		var proxyMap = new Map();
 		files.forEach(function(filepath) {
 			var rolePath = filepath.split('/');
-			var roleName = rolePath[3];
-			proxyMap.set(roleName, []);
-			console.log(roleName);
+			var roleName = rolePath[3].split('.')[0];
+			var permissionsJson = JSON.parse(fs.createReadStream(filepath));
+			var roleEntity = {name: roleName};
+			request.post({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true}, function (err, resp, body) {
+				if (!error && response.statusCode < 300) {
+					var permissionsTo = {resourcePermission: []};
+					permissionsJson.resourcePermission.forEach(function(per) {
+						if(per.organization === apigee.from.org){
+							var intPer = {};
+							if(!per.path.endsWith('/')){
+								intPer.path = per.path + '/';
+							} else {
+								intPer.path = per.path;
+							}
+							intPer.permissions = per.permissions;
+							permissionsTo.resourcePermission.push(intPer);
+						}
+					});
+					request.post({url: url+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true}, function (err, resp, body) {
+						if (!error && response.statusCode < 300) {
+							
+						}
+						done_count++;
+						if (done_count == files.length)
+						{
+							grunt.log.ok('Imported ' + done_count + ' roles.');
+							done();
+						}
+					}).bind({url: url+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
+				}
+			}).bind({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true})).auth(userid, passwd, true);
 		});/*
 		files.forEach(function(filepath) {
 			var proxy_array = filepath.split('/');
@@ -67,7 +96,7 @@ module.exports = function(grunt) {
 					roleName !== 'businessuser'&& 
 					roleName !== 'readonlyadmin'){
 						grunt.verbose.writeln ("\Writing role: " + roleName);
-						request({url: url+'/'+roleName}).auth(userid, passwd, true)
+						request({url: url+'/'+roleName+'/permissions'}).auth(userid, passwd, true)
 						.pipe(fs.createWriteStream(filepath + '/' + roleName +'.json'))
 						.on('close', function () {
 							done_count++;
