@@ -4,7 +4,7 @@ var apigee = require('../config.js');
 var proxies;
 module.exports = function(grunt) {
 	'use strict';
-	grunt.registerTask('exportRoles', 'Export all custom roles from org ' + apigee.from.org + " [" + apigee.from.version + "]", function() {
+	grunt.registerTask('importRoles', 'Import all custom roles from org ' + apigee.from.org + " [" + apigee.from.version + "]", function() {
 		var url = apigee.from.url;
 		var org = apigee.from.org;
 		var userid = apigee.from.userid;
