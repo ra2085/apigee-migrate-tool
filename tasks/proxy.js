@@ -128,11 +128,7 @@ module.exports = function(grunt) {
 					  if (err) {
 						grunt.log.error(err);
 					  } else {
-						  if(key === 'CreateProxyWithCustomRole'){
-							  
 						grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy revision creation ' + this.url + ' -> ' + body);
-						  }
-						//grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy revision creation ' + this.url + ' -> ' + body);
 					  }
 					  done_count++;
 						if (done_count == total_count)
@@ -145,7 +141,6 @@ module.exports = function(grunt) {
 				  console.log(mapInt.get(f));
 				  form_1.append('file', fs.createReadStream(mapInt.get(f)));
 			  }
-			  //done();
 		});
 		var done = this.async();
 	});
