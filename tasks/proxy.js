@@ -129,7 +129,7 @@ module.exports = function(grunt) {
 						grunt.verbose.writeln('Resp [' + resp.statusCode + '] for proxy revision creation ' + this.url + ' -> ' + body);
 					  }
 					  done_count++;
-						if (done_count == proxies.length)
+						if (done_count == proxyMap.size)
 						{
 							grunt.log.ok('Exported ' + done_count + ' proxies.');
 							done();
