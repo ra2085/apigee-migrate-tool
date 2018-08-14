@@ -11,8 +11,9 @@ module.exports = function(grunt) {
 		var passwd = apigee.from.passwd;
 		var fs = require('fs');
 		var filepath = grunt.config.get("exportProxies.dest.data");
+		var done_count =0;
 		var done = this.async();
-		grunt.verbose.write("getting proxies..." + url);
+		grunt.verbose.write("getting roles..." + url);
 		grunt.file.mkdir(filepath+'/roles/');
 		url = url + "/v1/organizations/" + org + "/userroles/";
 		request(url, function (error, response, body) {
@@ -27,7 +28,12 @@ module.exports = function(grunt) {
 						request({url: url+'/'+roleName}).auth(userid, passwd, true)
 						.pipe(fs.createWriteStream(filepath + '/roles/' + roleName +'.json'))
 						.on('close', function () {
-							
+							done_count++;
+							if (done_count == existingRoles.length)
+							{
+								grunt.log.ok('Exported ' + done_count + ' roles.');
+								done();
+							}
 							//grunt.verbose.writeln('Proxy File written!');
 						});
 					}
