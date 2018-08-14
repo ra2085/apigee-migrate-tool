@@ -139,7 +139,7 @@ module.exports = function(grunt) {
 				  form_1.append('file', fs.createReadStream(proxyMap.get(key)[f]));
 			  }
 			  //done();
-		}
+		});
 		var done = this.async();
 	});
 
