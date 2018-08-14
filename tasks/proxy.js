@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 		files.forEach(function(filepath) {
 			var rolePath = filepath.split('/');
 			var roleName = rolePath[3].split('.')[0];
-			var permissionsJson = JSON.parse(fs.createReadStream(filepath));
+			var permissionsJson = fs.createReadStream(filepath);
 			var roleEntity = {name: roleName};
 			request.post({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true}, function (err, resp, body) {
 				if (!error && response.statusCode < 300) {
