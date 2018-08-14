@@ -23,6 +23,9 @@ module.exports = function(grunt) {
     exportProxies: {
        dest: './data/proxies'       
     },
+    exportRoles: {
+       dest: './data/roles'       
+    },
     exportOrgKVM: {
        dest: './data/kvm/org'       
     },

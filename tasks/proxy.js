@@ -10,11 +10,11 @@ module.exports = function(grunt) {
 		var userid = apigee.from.userid;
 		var passwd = apigee.from.passwd;
 		var fs = require('fs');
-		var filepath = grunt.config.get("exportProxies.dest.data");
+		var filepath = grunt.config.get("exportRoles.dest.data");
 		var done_count =0;
 		var done = this.async();
 		grunt.verbose.write("getting roles..." + url);
-		grunt.file.mkdir(filepath+'/roles/');
+		grunt.file.mkdir(filepath);
 		url = url + "/v1/organizations/" + org + "/userroles/";
 		request(url, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 					roleName !== 'readonlyadmin'){
 						grunt.verbose.writeln ("\Writing role: " + roleName);
 						request({url: url+'/'+roleName}).auth(userid, passwd, true)
-						.pipe(fs.createWriteStream(filepath + '/roles/' + roleName +'.json'))
+						.pipe(fs.createWriteStream(filepath + '/' + roleName +'.json'))
 						.on('close', function () {
 							done_count++;
 							if (done_count == existingRoles.length)
