@@ -119,9 +119,10 @@ module.exports = function(grunt) {
 			  for(var f = 0; f < proxyMap.get(key).length; f++){
 				  var revNo = proxyMap.get(key)[f].split('/')[4].split('.')[0];
 				  mapInt.set(revNo, proxyMap.get(key)[f]);
+				  console.log(revNo+'h');
 			  }
 			  for(var f = 1; f < proxyMap.get(key).length+1; f++){
-				  console.log(f);
+				  
 				  var revReq = request.post({url: url+key}, function (err, resp, body) {
 					  if (err) {
 						grunt.log.error(err);
