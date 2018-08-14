@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 			var permissionsJson = fs.createReadStream(filepath);
 			var roleEntity = {name: roleName};
 			request.post({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true}, function (err, resp, body) {
-				if (!error && response.statusCode < 300) {
+				if (!err && resp.statusCode < 300) {
 					var permissionsTo = {resourcePermission: []};
 					permissionsJson.resourcePermission.forEach(function(per) {
 						if(per.organization === apigee.from.org){
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
 						}
 					});
 					request.post({url: url+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true}, function (err, resp, body) {
-						if (!error && response.statusCode < 300) {
+						if (!err && resp.statusCode < 300) {
 							
 						}
 						done_count++;
