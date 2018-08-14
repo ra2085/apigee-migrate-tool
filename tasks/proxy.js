@@ -57,7 +57,7 @@ module.exports = function(grunt) {
 						if (!err && resp.statusCode < 300) {
 							
 						} else {
-							grunt.log.error(resp);
+							grunt.log.error(JSON.stringify(resp));
 						}
 						done_count++;
 						if (done_count == files.length)
