@@ -136,7 +136,7 @@ module.exports = function(grunt) {
 						}
 				  }.bind( {url: url+key})).auth(userid, passwd, true);
 				  var form_1 = revReq.form();
-				  console.log(proxyMap.get(key)[f]);
+				  console.log(mapInt.get(f));
 				  form_1.append('file', fs.createReadStream(mapInt.get(f)));
 			  }
 			  //done();
