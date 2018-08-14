@@ -56,6 +56,8 @@ module.exports = function(grunt) {
 					request.post({url: url+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true}, function (err, resp, body) {
 						if (!err && resp.statusCode < 300) {
 							
+						} else {
+							grunt.log.error(err);
 						}
 						done_count++;
 						if (done_count == files.length)
@@ -64,6 +66,8 @@ module.exports = function(grunt) {
 							done();
 						}
 					}.bind({url: url+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
+				} else {
+					grunt.log.error(err);
 				}
 			}.bind({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true})).auth(userid, passwd, true);
 		});/*
