@@ -38,6 +38,7 @@ module.exports = function(grunt) {
 			var roleEntity = {name: roleName};
 			request.post({url: url, timeout: 10000, pool: separateReqPool, body: roleEntity, json: true}, function (err, resp, body) {
 				if (!err && resp.statusCode < 300) {
+					console.log(roleName);
 					var permissionsTo = {resourcePermission: []};
 					permissionsJson.resourcePermission.forEach(function(per) {
 						if(per.organization === apigee.from.org){
@@ -47,6 +48,7 @@ module.exports = function(grunt) {
 							} else {
 								intPer.path = per.path;
 							}
+							console.log(intPer.path);
 							intPer.permissions = per.permissions;
 							permissionsTo.resourcePermission.push(intPer);
 						}
