@@ -53,7 +53,7 @@ module.exports = function(grunt) {
 							permissionsTo.resourcePermission.push(intPer);
 						}
 					});
-					request.post({url: url+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true}, function (err, resp, body) {
+					request.post({url: url+'/'+roleName+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true}, function (err, resp, body) {
 						if (!err && resp.statusCode < 300) {
 							
 						} else {
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 							grunt.log.ok('Imported ' + done_count + ' roles.');
 							done();
 						}
-					}.bind({url: url+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
+					}.bind({url: url+'/'+roleName+'/resourcepermissions', timeout: 10000, pool: separateReqPool, body: permissionsTo, json: true})).auth(userid, passwd, true);
 				} else {
 					grunt.log.error(err);
 				}
