@@ -4,6 +4,37 @@ var apigee = require('../config.js');
 var proxies;
 module.exports = function(grunt) {
 	'use strict';
+	grunt.registerTask('exportRoles', 'Export all custom roles from org ' + apigee.from.org + " [" + apigee.from.version + "]", function() {
+		var url = apigee.from.url;
+		var org = apigee.from.org;
+		var userid = apigee.from.userid;
+		var passwd = apigee.from.passwd;
+		var fs = require('fs');
+		var filepath = grunt.config.get("exportProxies.dest.data");
+		var done = this.async();
+		grunt.verbose.write("getting proxies..." + url);
+		grunt.file.mkdir(filepath+'/roles/');
+		url = url + "/v1/organizations/" + org + "/userroles/";
+		request(url, function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				var existingRoles =  JSON.parse(body);
+				existingRoles.forEach(function(roleName) {
+					grunt.verbose.writeln ("\nFetching role: " + roleName);
+					if(roleName !== 'user' && 
+					roleName !== 'devadmin' && 
+					roleName !== 'opsadmin' && 
+					roleName !== 'orgadmin'){
+						request({url: url+'/'+roleName}).auth(userid, passwd, true)
+						.pipe(fs.createWriteStream(filepath + '/roles/' + roleName +'.json'))
+						.on('close', function () {
+							
+							//grunt.verbose.writeln('Proxy File written!');
+						});
+					}
+				});
+			}
+		}).auth(userid, passwd, true);
+	});
 	grunt.registerTask('exportProxies', 'Export all proxies from org ' + apigee.from.org + " [" + apigee.from.version + "]", function() {
 		var url = apigee.from.url;
 		var org = apigee.from.org;
@@ -47,14 +78,6 @@ module.exports = function(grunt) {
 										//grunt.verbose.writeln('Proxy File written!');
 									});
 							}
-						    //var proxy_download_url = url + "/" + proxy_detail.name + "/revisions/" + max_rev + "?format=bundle";
-						    //grunt.verbose.writeln ("\nFetching proxy bundle  : " + proxy_download_url);
-
-						    //request(proxy_download_url).auth(userid, passwd, true)
-							//  .pipe(fs.createWriteStream(filepath + "/" + proxy_detail.name + '.zip'))
-							//  .on('close', function () {
-							//    //grunt.verbose.writeln('Proxy File written!');
-							//});
 						}
 						else
 						{
@@ -84,8 +107,6 @@ module.exports = function(grunt) {
 		var passwd = apigee.to.passwd;
 		var files;
 		var done_count = 0;
-		var create_proxy = url + "/v1/organizations/" + org + "/apis";
-		var create_revision = url + "/v1/organizations/" + org + "/apis";
 		url = url + "/v1/organizations/" + org + "/apis?action=import&name=";
 		var fs = require('fs');
 		var opts = {flatten: false};
@@ -102,14 +123,12 @@ module.exports = function(grunt) {
 		var total_count = 0;
 		var proxyMap = new Map();
 		files.forEach(function(filepath) {
-			//console.log(filepath);
 			var proxy_array = filepath.split('/');
 			var proxy_name = proxy_array[3];
 			proxyMap.set(proxy_name, []);
 		});
 		files.forEach(function(filepath) {
 			var proxy_array = filepath.split('/');
-			//var proxy_rev = proxy_array[4].split('.')[0];
 			proxyMap.get(proxy_array[3]).push(filepath);
 			console.log(proxy_array[3]);
 			total_count++;
@@ -118,11 +137,14 @@ module.exports = function(grunt) {
 		proxyMap.forEach(function(value, key) {
 		  console.log(key);
 			  var mapInt = new Map();
+			  var intSorted = [];
 			  for(var f = 0; f < proxyMap.get(key).length; f++){
-				  var revNo = proxyMap.get(key)[f].split('/')[4].split('.')[0];
-				  mapInt.set(parseInt(revNo), proxyMap.get(key)[f]);
+				  var revNo = parseInt(proxyMap.get(key)[f].split('/')[4].split('.')[0]);
+				  mapInt.set(revNo, proxyMap.get(key)[f]);
+				  intSorted.push(revNo);
 			  }
-			  for(var f = 1; f < proxyMap.get(key).length+1; f++){
+			  intSorted.sort(function(a, b){return a-b});
+			  for(var f = 0; f < intSorted.length; f++){
 				  
 				  var revReq = request.post({url: url+key, timeout: 10000, pool: separateReqPool}, function (err, resp, body) {
 					  if (err) {
@@ -138,8 +160,8 @@ module.exports = function(grunt) {
 						}
 				  }.bind( {url: url+key, timeout: 10000, pool: separateReqPool})).auth(userid, passwd, true);
 				  var form_1 = revReq.form();
-				  console.log(mapInt.get(f));
-				  form_1.append('file', fs.createReadStream(mapInt.get(f)));
+				  console.log(mapInt.get(intSorted[f]));
+				  form_1.append('file', fs.createReadStream(mapInt.get(intSorted[f])));
 			  }
 		});
 		var done = this.async();
