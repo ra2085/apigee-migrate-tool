@@ -13,6 +13,45 @@ module.exports = function(grunt) {
 		var filepath = grunt.config.get("exportRoles.dest.data");
 		var done_count =0;
 		var done = this.async();
+		var files;
+		var done_count = 0;
+		url = url + "/v1/organizations/" + org + "/userroles";
+		var fs = require('fs');
+		var opts = {flatten: false};
+		var f = grunt.option('src');
+		if (f)
+		{
+			grunt.verbose.writeln('src pattern = ' + f);
+			files = grunt.file.expand(opts,f);
+		}
+		else
+		{
+			files = this.filesSrc;
+		}
+		var total_count = 0;
+		var proxyMap = new Map();
+		files.forEach(function(filepath) {
+			var rolePath = filepath.split('/');
+			var roleName = proxy_array[3];
+			proxyMap.set(roleName, []);
+			console.log(roleName);
+		});/*
+		files.forEach(function(filepath) {
+			var proxy_array = filepath.split('/');
+			proxyMap.get(proxy_array[3]).push(filepath);
+			console.log(proxy_array[3]);
+			total_count++;
+		});*/
+	});
+	grunt.registerTask('exportRoles', 'Export all custom roles from org ' + apigee.from.org + " [" + apigee.from.version + "]", function() {
+		var url = apigee.from.url;
+		var org = apigee.from.org;
+		var userid = apigee.from.userid;
+		var passwd = apigee.from.passwd;
+		var fs = require('fs');
+		var filepath = grunt.config.get("exportRoles.dest.data");
+		var done_count =0;
+		var done = this.async();
 		grunt.verbose.write("getting roles..." + url);
 		grunt.file.mkdir(filepath);
 		url = url + "/v1/organizations/" + org + "/userroles/";
