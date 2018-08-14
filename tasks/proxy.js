@@ -120,7 +120,7 @@ module.exports = function(grunt) {
 				  var revNo = proxyMap.get(key)[f].split('/')[4].split('.')[0];
 				  mapInt.set(revNo, proxyMap.get(key)[f]);
 			  }
-			  for(var f = 1; f < mapInt.get(key).length+1; f++){
+			  for(var f = 1; f < proxyMap.get(key).length+1; f++){
 				  console.log(f);
 				  var revReq = request.post({url: url+key}, function (err, resp, body) {
 					  if (err) {
@@ -137,7 +137,7 @@ module.exports = function(grunt) {
 				  }.bind( {url: url+key})).auth(userid, passwd, true);
 				  var form_1 = revReq.form();
 				  console.log(proxyMap.get(key)[f]);
-				  form_1.append('file', fs.createReadStream(mapInt.get(key)[f]));
+				  form_1.append('file', fs.createReadStream(mapInt.get(f)));
 			  }
 			  //done();
 		});
